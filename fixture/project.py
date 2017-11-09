@@ -43,6 +43,10 @@ class ProjectHelper:
         wd.find_element_by_xpath("//form[@id='manage-project-create-form']/div/div[3]/input").click()
         wd.find_element_by_link_text("Proceed").click()
 
+    def select_project_by_id(self, id):
+        wd = self.app.wd
+        wd.find_element_by_xpath("//a[@href='manage_proj_edit_page.php?project_id=%s']" % id).click()
+
     def get_project_list(self):
         wd = self.app.wd
         self.open_projects_page()
@@ -56,6 +60,12 @@ class ProjectHelper:
             self.project_list.append(Project(id=id, name=name, description=description))
         return list(self.project_list)
 
+    def delete_by_id(self, id):
+        wd = self.app.wd
+        self.open_projects_page()
+        self.select_project_by_id(id)
+        wd.find_element_by_xpath("//input[@value='Delete Project']").click()
+        wd.find_element_by_xpath("//input[@value='Delete Project']").click()
 
 
 
