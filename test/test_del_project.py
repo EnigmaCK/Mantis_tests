@@ -3,7 +3,8 @@ from model.project import Project
 import random
 
 
-def test_del_project(app):
+def test_del_project(app, config):
+    app.session.ensure_login(username=config['webadmin']['username'], password=config['webadmin']['password'])
     if len(app.project.get_project_list()) == 0:
         app.project.create(Project(name="Some project" + str(random.randrange(0, 10000))))
     old_projects = app.project.get_project_list()

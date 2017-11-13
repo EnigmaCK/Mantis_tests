@@ -2,11 +2,15 @@
 from selenium import webdriver
 from fixture.session import SessionHelper
 from fixture.project import ProjectHelper
+from fixture.james import JamesHelper
+from fixture.signup import SignupHelper
+from fixture.mail import MailHelper
+
 
 
 class Application:
 
-    def __init__(self, browser, base_url):
+    def __init__(self, browser, config):
         if browser == "firefox":
             self.wd = webdriver.Firefox(capabilities={"marionette": False})
         elif browser == "chrome":
@@ -15,10 +19,14 @@ class Application:
             self.wd = webdriver.Ie()
         else:
             raise ValueError("Unrecognized browser %s" % browser)
-        self.wd.implicitly_wait(2)
+        self.wd.implicitly_wait(5)
         self.session = SessionHelper(self)
         self.project = ProjectHelper(self)
-        self.base_url = base_url
+        self.james = JamesHelper(self)
+        self.signup = SignupHelper(self)
+        self.mail = MailHelper(self)
+        self.config=config
+        self.base_url = config['web']['baseURL']
 
     def is_valid(self):
         try:
@@ -27,14 +35,14 @@ class Application:
         except:
             return False
 
-    def open_home_page(self):
+    def open_home_page(self, config):
         wd = self.wd
-        if not (wd.current_url == "http://localhost/mantisbt-2.8.0/my_view_page.php"):
+        if not (wd.current_url == config['web']['baseURL'] + '/my_view_page.php'):
             wd.get(self.base_url)
 
-    def return_to_home_page(self):
+    def return_to_home_page(self, config):
         wd = self.wd
-        if not (wd.current_url == "http://localhost/mantisbt-2.8.0/my_view_page.php"):
+        if not (wd.current_url == config['web']['baseURL'] + '/my_view_page.php'):
             wd.find_element_by_link_text("home page").click()
 
     def destroy(self):
