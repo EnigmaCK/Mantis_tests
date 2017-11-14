@@ -2,3 +2,4 @@ pytest
 selenium
 jsonpickle
 suds-jurko
+ftputil
