@@ -2,4 +2,3 @@ pytest
 selenium
 jsonpickle
 suds-jurko
-telnetlib
